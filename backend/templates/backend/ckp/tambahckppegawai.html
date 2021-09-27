@@ -1,0 +1,194 @@
+{% extends "backend/base.html" %}
+{% block content %}
+{% load static %}
+
+{% block style %}
+{{ block.super }}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'backend/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'backend/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'backend/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+{% endblock style %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-plus"></i>&nbsp;&nbsp;Buat CKP Pegawai</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'backend-home' %}">Beranda</a></li>
+                        <li class="breadcrumb-item"><a href="#">Daftar CKP</a></li>
+                        <li class="breadcrumb-item active">Buat CKP Pegawai</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages|slice:":1" %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                            id='btn-close-alert'>&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- Horizontal Form -->
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Buat CKP Pegawai</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form class="form-horizontal" method="POST">
+                            {% csrf_token %}
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="inputTahun" class="col-sm-2 col-form-label">Tahun</label>
+                                    <div class="col-sm-10">
+                                        {% now "Y" as current_year %}
+                                        <select class="form-control select2bs4" disabled="disabled" style="width: 100%;"
+                                            name="tahun" id="inputTahun">
+                                            <option value="{{ current_year }}">{{ current_year }}</option>
+                                        </select>
+                                    </div>
+                                    {% for err in form.tahun.errors %}
+                                    <small class="text-danger ml-2">{{ err }}</small><br>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputBulan" class="col-sm-2 col-form-label">Bulan</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2bs4" style="width: 100%;" name="bulan"
+                                            id="inputBulan">
+                                            {% for bulan in bulan_max_list %}
+                                            <option value="{{ forloop.counter }}">{{ bulan }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% for err in form.bulan.errors %}
+                                    <small class="text-danger ml-2">{{ err }}</small><br>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPegawai" class="col-sm-2 col-form-label">Pegawai</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2bs4" style="width: 100%;" name="pegawai"
+                                            id="inputPegawai">
+                                            {% for pegawai in pegawai_list %}
+                                            <option value="{{ pegawai.id }}">{{ pegawai.get_full_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% for err in form.pegawai.errors %}
+                                    <small class="text-danger ml-2">{{ err }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary float-right"
+                                    style="margin-right: 5px;">Simpan</button>
+                            </div>
+                            <!-- /.card-footer -->
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+{% block scripts %}
+{{ block.super }}
+<!-- Select2 -->
+<script src="{% static 'backend/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'backend/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        $("#tabel-masterkegiatan").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
+    });
+</script>
+<!-- Page script -->
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        //Date range picker
+        $('#reservationdate').datetimepicker({
+            format: 'L'
+        });
+        //Date range picker
+        $('#reservation').daterangepicker()
+        //Date range picker with time picker
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+        })
+        //Date range as a button
+        $('#daterange-btn').daterangepicker(
+            {
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            },
+            function (start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+            }
+        )
+
+        //Timepicker
+        $('#timepicker').datetimepicker({
+            format: 'LT'
+        })
+
+        $("input[data-bootstrap-switch]").each(function () {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        });
+
+        $("#success-alert").delay(3000).slideUp(200, function () {
+            $("#success-alert").slideUp(200);
+        });
+
+    })
+</script>
+{% endblock scripts %}

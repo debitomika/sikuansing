@@ -1,0 +1,3 @@
+ <form class="form-horizontal" method="POST" id="tambahKegiatanCKPForm"
+                            data-satuan-url="{% url 'ajax_load_satuan' %}" data-butir-kegiatan-url="{% url 'ajax_load_butir_kegiatan' %}"
+                            data-angka-kredit-url="{% url 'ajax_load_angka_kredit' %}">

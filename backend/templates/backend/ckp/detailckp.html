@@ -1,0 +1,188 @@
+{% extends "backend/base.html" %}
+{% block content %}
+{% load static %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-info-circle"></i>&nbsp;&nbsp;Detail CKP</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'backend-home' %}">Beranda</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'sicakep-daftarckp' %}">Daftar CKP</a>
+                        </li>
+                        <li class="breadcrumb-item active">Detail CKP {{ dokumen_ckp.pegawai.get_full_name }}</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'sicakep-tambahkegiatanckp' dokumen_ckp.id %}" class="btn btn-info" role="button"
+                    style="margin-right: 5px;"><i class="fas fa-plus"></i>&nbsp;Tambah Kegiatan ke CKP</a>
+                <a href="{% url 'sicakep-export-excel' dokumen_ckp.id %}" class="btn btn-info" role="button"><i class="fas fa-file-excel"></i>&nbsp;Export ke Excel</a>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages|slice:":1" %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" id="success-alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                            id='btn-close-alert'>&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- Keterangan Umum -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Detail CKP : {{ dokumen_ckp.pegawai.get_full_name }}</h3>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form class="form-horizontal">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="inputKegiatan" class="col-sm-2 col-form-label">Pegawai</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputPegawai" name="pegawai"
+                                            value="{{ dokumen_ckp.pegawai.get_full_name }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputTahun" class="col-sm-2 col-form-label">Tahun</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2bs4" disabled="disabled" style="width: 100%;"
+                                            name="tahun" id="inputTahun">
+                                            <option value="{{ dokumen_ckp.periode.year }}">{{ dokumen_ckp.periode|date:"Y" }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputBulan" class="col-sm-2 col-form-label">Bulan</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2bs4" disabled="disabled" style="width: 100%;"
+                                            name="bulan" id="inputBulan">
+                                            <option value="{{ dokumen_ckp.periode.month }}">{{ dokumen_ckp.periode|date:"F" }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <!-- /.card-footer -->
+                        </form>
+                    </div>
+                    <!-- Keterangan Kegiatan -->
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Daftar Kegiatan, Tekan tombol <i class="fas fa-check-square"></i> untuk entri Realisasi dan Kualitas</i></h3>
+                        </div>
+                        <div class="card-body">
+                            <table id="tabel-daftarkegiatan" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 1%">No</th>
+                                        <th style="width: 5%">Jenis</th>
+                                        <th style="width: 30%">Kegiatan</th>
+                                        <th style="width: 5%">Satuan</th>
+                                        <th style="width: 1%">Target</th>
+                                        <th style="width: 1%">Realisasi</th>
+                                        <th style="width: 1%">Kualitas</th>
+                                        <th style="width: 10%">Pemberi Pekerjaan</th>
+                                        <th>Keterangan</th>
+                                        <th style="width: 6%" class="text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for butir_ckp in butir_ckp_set %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ butir_ckp.get_jenis_butir_ckp_display }}</td>
+                                        <td>{{ butir_ckp.kegiatan.uraian_kegiatan }}</td>
+                                        <td>{{ butir_ckp.kegiatan.satuan }}</td>
+                                        <td>{{ butir_ckp.target }}</td>
+                                        <td>{% if butir_ckp.realisasi %}{{ butir_ckp.realisasi }} {% else %} - {% endif%}</td>
+                                        <td>{% if butir_ckp.tingkat_kualitas %}{{ butir_ckp.tingkat_kualitas }} {% else%} - {% endif %}</td>
+                                        <td>{{ butir_ckp.kegiatan.get_subject_matter_singkat }}</td>
+                                        <!-- <td>{{ butir_ckp.keterangan|truncatechars:10 }}</td> -->
+                                        <td>{{ butir_ckp.keterangan}}</td>
+                                        <td class="project-actions">
+                                            <a class="btn btn-info btn-sm"
+                                                href="{% url 'sicakep-penilaianckp' butir_ckp.id %}">
+                                                <i class="far fa-check-square"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-danger-{{ butir_ckp.id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+        {% for butir_ckp in butir_ckp_set %}
+        <div class="modal fade" id="modal-danger-{{ butir_ckp.id }}">
+            <div class="modal-dialog">
+                <div class="modal-content bg-danger">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Hapus Butir CKP</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah anda yakin untuk menghapus butir CKP ini&hellip; ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Batal</button>
+                        <form action="{% url 'sicakep-deletebutirckp' butir_ckp.id dokumen_ckp.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light float-right" name="hapus">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        {% endfor %}
+        <!-- /.modal -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+{% block scripts %}
+{{ block.super }}
+<script>
+    $(function () {
+        $("#tabel-daftarkegiatan").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
+    });
+
+    $("#success-alert").delay(3000).slideUp(200, function () {
+        $("#success-alert").slideUp(200);
+    });
+
+</script>
+{% endblock scripts %}

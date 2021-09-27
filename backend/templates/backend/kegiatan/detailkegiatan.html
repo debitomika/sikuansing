@@ -1,0 +1,104 @@
+{% extends "backend/base.html" %}
+{% block content %}
+{% load static %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-info-circle"></i>&nbsp;&nbsp;Detail Kegiatan</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'backend-home' %}">Beranda</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'sicakep-masterkegiatan' %}">Master Kegiatan</a>
+                        </li>
+                        <li class="breadcrumb-item active">Detail Kegiatan</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- Horizontal Form -->
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Detail Kegiatan : {{ kegiatan.uraian_kegiatan }}</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form class="form-horizontal">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="inputKegiatan" class="col-sm-2 col-form-label">Kegiatan</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputKegiatan"
+                                            name="uraian_kegiatan" value="{{ kegiatan.uraian_kegiatan }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputSubjectMatter" class="col-sm-2 col-form-label">Subject
+                                        Matter</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2bs4" disabled="disabled" style="width: 100%;"
+                                            name="subject_matter" id="inputSubjectMatter">
+                                            <option selected="selected" value="{{ kegiatan.subject_matter }}">{{ kegiatan.get_subject_matter_display }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputButirKegiatan" class="col-sm-2 col-form-label">Butir
+                                        Kegiatan</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2bs4" disabled="disabled" style="width: 100%;"
+                                            name="butir_kegiatan" id="inputButirKegiatan">
+                                            {% if kegiatan.butir_kegiatan.jenis_fungsional == 'ST' %}
+                                            <option selected="selected" value="{{ kegiatan.butir_kegiatan.id }}">{{ kegiatan.butir_kegiatan.get_butir_kegiatan_statistisi_display }}</option>
+                                            {% else %}
+                                            <option  selected="selected" value="{{ kegiatan.butir_kegiatan.id }}">{{ kegiatan.butir_kegiatan.get_butir_kegiatan_pranata_komputer_display }}</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputAngkaKredit" class="col-sm-2 col-form-label">Angka Kredit</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputAngkaKredit"
+                                            name="angka_kredit" value="{{ kegiatan.butir_kegiatan.angka_kredit }}" disabled>
+                                    </div>
+                                    {% for err in form.angka_kredit.errors %}
+                                    <small class="text-danger ml-2">{{ err }}</small><br>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputSatuan" class="col-sm-2 col-form-label">Satuan</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputSatuan"
+                                            name="satuan" value="{{ kegiatan.satuan }}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <!-- /.card-footer -->
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}

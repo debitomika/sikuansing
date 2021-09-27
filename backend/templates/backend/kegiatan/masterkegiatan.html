@@ -1,0 +1,185 @@
+{% extends "backend/base.html" %}
+{% block content %}
+{% load static %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-book-open"></i>&nbsp;&nbsp;Master Kegiatan</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'backend-home' %}">Beranda</a></li>
+                        <li class="breadcrumb-item active">Master Kegiatan</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages|slice:":1" %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" id="success-alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                            id='btn-close-alert'>&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Master Kegiatan</h3>
+                            <div class="d-flex justify-content-end">
+                                <a href="{% url 'sicakep-tambahkegiatan' %}" class="btn btn-info" role="button"><i
+                                        class="fas fa-plus"></i>&nbsp;Tambah</a>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <div class="card-body">
+                            <table id="tabel-masterkegiatan" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: .5%">No</th>
+                                        <th>Kegiatan</th>
+                                        <th>Subject Matter</th>
+                                        <th>Kode Butir</th>
+                                        <th style="width: 9%" class="text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for masterkegiatan in masterkegiatans %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ masterkegiatan.uraian_kegiatan }}</td>
+                                        <td>{{ masterkegiatan.get_subject_matter_display }}</td>
+                                        <td>
+                                            {% if masterkegiatan.butir_kegiatan %}
+                                                {{ masterkegiatan.butir_kegiatan }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td class="project-actions">
+                                            <a class="btn btn-primary btn-sm"
+                                                href="{% url 'sicakep-detailkegiatan' masterkegiatan.id %}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if masterkegiatan.author == user or user.is_superuser %}
+                                            <a class="btn btn-info btn-sm"
+                                                href="{% url 'sicakep-updatekegiatan' masterkegiatan.id %}">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#modal-danger-{{ masterkegiatan.id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="width: .5%"></th>
+                                        <th>Kegiatan</th>
+                                        <th>Subject Matter</th>
+                                        <th>Kode Butir</th>
+                                        <th style="width: 9%" class="text-center"></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+                <!-- right column -->
+                <!-- <div class="col-md-6">
+
+                </div> -->
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+        {% for masterkegiatan in masterkegiatans %}
+        <div class="modal fade" id="modal-danger-{{ masterkegiatan.id }}">
+            <div class="modal-dialog">
+                <div class="modal-content bg-danger">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Hapus Kegiatan</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah anda yakin untuk menghapus kegiatan ini&hellip; ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Batal</button>
+                        <form action="{% url 'sicakep-deletekegiatan' masterkegiatan.id  %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light float-right" name="hapus">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        {% endfor %}
+        <!-- /.modal -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+{% block scripts %}
+{{ block.super }}
+<!-- daterangepicker -->
+<script src="{% static 'backend/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'backend/plugins/daterangepicker/daterangepicker.js' %}"></script>
+<!-- page script -->
+<script>
+    $(document).ready(function () {
+        $('#tabel-masterkegiatan').DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            initComplete: function () {
+                this.api().columns([1, 2, 3]).every(function () {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d.substr(0,64) + '</option>')
+                    });
+                });
+            }
+        });
+        $("#success-alert").delay(3000).slideUp(200, function () {
+            $("#success-alert").slideUp(200);
+        });
+    });
+</script>
+{% endblock scripts %}
