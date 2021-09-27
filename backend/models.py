@@ -522,7 +522,7 @@ class MasterKegiatan(models.Model):
         if singkat == 'Koordinator Fungsi Integrasi Pengolahan dan Diseminasi Statistik':
             return 'IPDS'
         elif singkat == 'Koordinator Fungsi Neraca Wilayah dan Analisis Statistik':
-            return 'Nerwilis'
+            return 'Neraca Wilayah dan Analisis Statistik'
         else:
             return " ".join(singkat.split()[2:])
 
