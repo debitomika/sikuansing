@@ -24,6 +24,11 @@ urlpatterns = [
     path('delete_butir_ckp/<int:btpk>/<int:dkpk>/', views.delete_butir_ckp, name='sicakep-deletebutirckp'),
     path('penilaianckp/<int:pk>/', views.penilaian_ckp, name='sicakep-penilaianckp'),
     path('export-excel/<int:pk>/', views.export_xls_ckp, name='sicakep-export-excel'),
+    
+    # URL PIA
+    path('daftarpenilaianpia/', views.daftar_penilaian_pia, name='sipia-daftar-penilaian-pia'),
+    
+    # URL Ajax
     path('ajax/load-satuan/', views.load_satuan, name='ajax_load_satuan'),
     path('ajax/load-butir-kegiatan/', views.load_butir_kegiatan, name='ajax_load_butir_kegiatan'),
     path('ajax/load-angka-kredit/', views.load_angka_kredit, name='ajax_load_angka_kredit'),

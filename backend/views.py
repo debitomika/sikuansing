@@ -1015,4 +1015,10 @@ def load_master_angka_kredit(request):
 
 # <------------------------------------------ END SICAKEP - CKP ----------------------------------------->
 
+# <------------------------------------------ SIPIA --------------------------------------------->
+@login_required
+def daftar_penilaian_pia(request):
+    return render(request, 'backend/pia/daftarpenilaianpia.html')
+
+# <------------------------------------------ SIPIA --------------------------------------------->
 # <app>/<model>_<viewtype>.html
