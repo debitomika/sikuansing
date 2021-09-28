@@ -565,7 +565,8 @@ class ButirCKP(models.Model):
     keterangan = models.TextField(blank=True, null=True)
 
 class PIA(models.Model):
-    pegawai = models.ForeignKey(CustomUser, on_delete=CASCADE)
+    pegawai_dinilai = models.ForeignKey(CustomUser, on_delete=CASCADE, related_name="pegawai_dinilai")
+    pegawai_penilai = models.ForeignKey(CustomUser, on_delete=CASCADE,related_name="pegawai_penilai")
     periode = models.DateTimeField(null=True)
 
     profesional = models.FloatField(null=True)

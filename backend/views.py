@@ -1018,7 +1018,12 @@ def load_master_angka_kredit(request):
 # <------------------------------------------ SIPIA --------------------------------------------->
 @login_required
 def daftar_penilaian_pia(request):
-    return render(request, 'backend/pia/daftarpenilaianpia.html')
+    pegawai_list = CustomUser.objects.all().exclude(is_superuser=True).exclude(id=request.user.id).extra(select={"jabatan_kantor_int": "CAST(jabatan_kantor AS INTEGER)"}).order_by("jabatan_kantor_int")
 
-# <------------------------------------------ SIPIA --------------------------------------------->
+    context = {
+        'pegawai_list': pegawai_list,
+    }
+    return render(request, 'backend/pia/daftarpenilaianpia.html', context)
+
+# <------------------------------------------ END SIPIA --------------------------------------------->
 # <app>/<model>_<viewtype>.html
