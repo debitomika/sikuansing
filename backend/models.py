@@ -574,3 +574,6 @@ class PIA(models.Model):
     amanah = models.FloatField(null=True)
 
     total = models.FloatField(null=True)
+
+    def __str__(self):
+        return str(self.id) + ' PIA ' + self.pegawai_penilai.get_full_name() + ' ---- ' + self.pegawai_dinilai.get_full_name() + ' ---- ' + self.periode.strftime("%d %B, %Y")

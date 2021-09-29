@@ -20,7 +20,7 @@ from django.views.generic import(
     ListView,
     CreateView
 )
-from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan
+from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan, PIA
 from .forms import ButirCKPCreationFormR, DokumenCKPCreationForm, KegiatanCreationForm, AdminKegiatanCreationForm, PenilaianButirCKPForm
 
 # <------------------------------------------ Permission and Authorization ------------------------------->
@@ -1019,10 +1019,23 @@ def load_master_angka_kredit(request):
 @login_required
 def daftar_penilaian_pia(request):
     pegawai_list = CustomUser.objects.all().exclude(is_superuser=True).exclude(id=request.user.id).extra(select={"jabatan_kantor_int": "CAST(jabatan_kantor AS INTEGER)"}).order_by("jabatan_kantor_int")
+    periode = datetime(datetime.now().year, datetime.now().month, 1, hour=12)
+    
+    if not PIA.objects.filter(pegawai_penilai=request.user, periode=periode).exists():
+        for pegawai in pegawai_list:
+            pia = PIA(pegawai_dinilai=pegawai, pegawai_penilai=request.user, periode=periode)
+            pia.save()
+    
+    pia_list = PIA.objects.filter(pegawai_penilai=request.user, periode=periode) 
 
+    bulan_max_list = DokumenCKP.get_daftar_bulan_max()
+    
     context = {
         'pegawai_list': pegawai_list,
+        'bulan_max_list' : bulan_max_list,
+        'pia_list' : pia_list,
     }
+
     return render(request, 'backend/pia/daftarpenilaianpia.html', context)
 
 # <------------------------------------------ END SIPIA --------------------------------------------->
