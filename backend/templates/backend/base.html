@@ -307,9 +307,9 @@
                             <ul class="nav nav-treeview">
                                 {% if user.is_superuser or user.jabatan_kantor == '2' %}
                                 <li class="nav-item">
-                                    <a href="" class="nav-link {% if title == '' %}active{% endif %}">
-                                        <i class="fas fa-plus-square nav-icon"></i>
-                                        <p>Buat PIA Pegawai</p>
+                                    <a href="{% url 'sipia-hasil-penilaian-pia' %}" class="nav-link {% if title == '' %}active{% endif %}">
+                                        <i class="fas fa-trophy nav-icon"></i>
+                                        <p>Hasil Penilaian</p>
                                     </a>
                                 </li>
                                 {% endif %}

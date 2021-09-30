@@ -27,6 +27,8 @@ urlpatterns = [
     
     # URL PIA
     path('daftarpenilaianpia/', views.daftar_penilaian_pia, name='sipia-daftar-penilaian-pia'),
+    path('penilaianpia/<int:pk>/', views.penilaian_pia, name='sipia-penilaianpia'),
+    path('hasilpenilaianpia/', views.hasil_penilaian_pia, name='sipia-hasil-penilaian-pia'),
     
     # URL Ajax
     path('ajax/load-satuan/', views.load_satuan, name='ajax_load_satuan'),

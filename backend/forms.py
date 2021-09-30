@@ -1,4 +1,4 @@
-from backend.models import ButirCKP, MasterKegiatan, DokumenCKP
+from backend.models import ButirCKP, MasterKegiatan, DokumenCKP, PIA
 from django import forms
 
 
@@ -31,3 +31,9 @@ class PenilaianButirCKPForm(forms.ModelForm):
     class Meta:
         model = ButirCKP
         fields = ['tingkat_kualitas','realisasi','keterangan']
+
+class PenilaianPIAForm(forms.ModelForm):
+
+    class Meta:
+        model = PIA
+        fields = ['profesional','integritas','amanah']

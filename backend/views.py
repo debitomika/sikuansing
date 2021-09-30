@@ -1,4 +1,6 @@
 import os
+from operator import itemgetter
+from django.db.models import Q, Avg
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 import locale
@@ -21,7 +23,7 @@ from django.views.generic import(
     CreateView
 )
 from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan, PIA
-from .forms import ButirCKPCreationFormR, DokumenCKPCreationForm, KegiatanCreationForm, AdminKegiatanCreationForm, PenilaianButirCKPForm
+from .forms import ButirCKPCreationFormR, DokumenCKPCreationForm, KegiatanCreationForm, AdminKegiatanCreationForm, PenilaianButirCKPForm, PenilaianPIAForm
 
 # <------------------------------------------ Permission and Authorization ------------------------------->
 
@@ -1038,5 +1040,39 @@ def daftar_penilaian_pia(request):
 
     return render(request, 'backend/pia/daftarpenilaianpia.html', context)
 
+@login_required
+def penilaian_pia(request, pk):
+    pia = PIA.objects.get(id=pk)
+
+    if request.method == 'POST':
+        form = PenilaianPIAForm(request.POST, instance=pia)
+        if form.is_valid():
+            fs = form.save(commit=False)
+            fs.total = (pia.profesional+pia.integritas+pia.amanah)/3
+            fs.save()
+            messages.success(request, f'SUKSES! Penilaian berhasil dilakukan')
+            return redirect('sipia-daftar-penilaian-pia')
+        else:
+            print('form tidak valid')
+    else:
+        form = PenilaianPIAForm()
+
+    context = {
+        'pia': pia,
+        'title': 'Penilaian PIA',
+    }
+
+    return render(request, 'backend/pia/entripenilaianpia.html', context)
+
+@login_required
+def hasil_penilaian_pia(request):
+    pegawai_list = CustomUser.objects.all().exclude(is_superuser=True)
+    periode = datetime(datetime.now().year, datetime.now().month, 1, hour=12)
+    nilai = {}
+    for pegawai in pegawai_list:
+        total = PIA.objects.filter(pegawai_dinilai=pegawai, periode=periode).aggregate(Avg('total'))
+        nilai[pegawai.username] = total
+
+    return render(request, 'backend/pia/hasilpenilaianpia.html')
 # <------------------------------------------ END SIPIA --------------------------------------------->
 # <app>/<model>_<viewtype>.html
