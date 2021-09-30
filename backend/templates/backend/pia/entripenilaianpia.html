@@ -1,0 +1,119 @@
+{% extends "backend/base.html" %}
+{% block content %}
+{% load static %}
+
+{% block style %}
+{{ block.super }}
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'backend/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'backend/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'backend/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+{% endblock style %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-check-square"></i>&nbsp;&nbsp;Entri Penilaian PIA</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'backend-home' %}">Beranda</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'sipia-daftar-penilaian-pia' %}">Daftar PIA</a>
+                        </li>
+                        <li class="breadcrumb-item active">Entri Penilaian</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages|slice:":1" %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" id="success-alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                            id='btn-close-alert'>&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- Horizontal Form -->
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ pia.pegawai_penilai.get_full_name }} Menilai PIA {{ pia.pegawai_dinilai.get_full_name }} {{ pia.periode|date:"F Y" }}</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form class="form-horizontal" method="POST" id="entriPenilaianForm">
+                            {% csrf_token %}
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="inputProfesional" class="col-sm-2 col-form-label">Profesional</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputProfesional" name="profesional">
+                                    </div>
+                                    {% for err in form.profesional.errors %}
+                                    <small class="text-danger ml-2">{{ err }}</small><br>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputIntegritas" class="col-sm-2 col-form-label">Integritas</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputIntegritas" name="integritas">
+                                    </div>
+                                    {% for err in form.integritas.errors %}
+                                    <small class="text-danger ml-2">{{ err }}</small><br>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputAmanah" class="col-sm-2 col-form-label">Amanah</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputAmanah" name="amanah">
+                                    </div>
+                                    {% for err in form.amanah.errors %}
+                                    <small class="text-danger ml-2">{{ err }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary float-right">Simpan</button>
+                            </div>
+                            <!-- /.card-footer -->
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+{% block scripts %}
+{{ block.super }}
+<!-- Select2 -->
+<script src="{% static 'backend/plugins/select2/js/select2.full.min.js' %}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'backend/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<!-- Page script -->
+<script>
+    $("#success-alert").delay(3000).slideUp(200, function () {
+        $("#success-alert").slideUp(200);
+    });
+
+</script>
+{% endblock scripts %}
