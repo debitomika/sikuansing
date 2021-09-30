@@ -107,7 +107,14 @@ class CustomUser(AbstractUser):
 
     def get_jabatan_kantor_singkat(self):
         singkat = self.get_jabatan_kantor_display()
-        return " ".join(singkat.split()[1:])
+        if singkat == 'Koordinator Fungsi Integrasi Pengolahan dan Diseminasi Statistik' or singkat == 'Staf Fungsi Integrasi Pengolahan dan Diseminasi Statistik':
+            return 'IPDS'
+        elif singkat == 'Koordinator Fungsi Neraca Wilayah dan Analisis Statistik' or singkat == 'Staf Fungsi Neraca Wilayah dan Analisis Statistik':
+            return 'Neraca Wilayah dan Analisis Statistik'
+        else:
+            return " ".join(singkat.split()[1:])
+
+        # return " ".join(singkat.split()[1:])
 
     def __str__(self):
         return self.username

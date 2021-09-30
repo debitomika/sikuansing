@@ -56,7 +56,7 @@
                                         <th>Periode</th>
                                         <th>Pegawai</th>
                                         <th>Jabatan Kantor</th>
-                                        <th style="width: 6%" class="text-center">Aksi</th>
+                                        <th style="width: 10%" class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -65,7 +65,7 @@
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ ckp.periode|date:"F Y" }}</td>
                                         <td>{{ ckp.pegawai.get_full_name }}</td>
-                                        <td>{{ ckp.pegawai.get_jabatan_kantor_display }}</td>
+                                        <td>{{ ckp.pegawai.get_jabatan_kantor_singkat }}</td>
                                         <td class="project-actions">
                                             <a class="btn btn-primary btn-sm"
                                                 href="{% url 'sicakep-detailckp' ckp.id %}">
