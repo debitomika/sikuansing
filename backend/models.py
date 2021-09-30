@@ -573,7 +573,15 @@ class PIA(models.Model):
     integritas = models.FloatField(null=True)
     amanah = models.FloatField(null=True)
 
-    total = models.FloatField(null=True)
+    total = models.FloatField(null=True, default=0)
 
     def __str__(self):
         return str(self.id) + ' PIA ' + self.pegawai_penilai.get_full_name() + ' ---- ' + self.pegawai_dinilai.get_full_name() + ' ---- ' + self.periode.strftime("%d %B, %Y")
+
+class PIAAgregat(models.Model):
+    pegawai = models.ForeignKey(CustomUser, on_delete=CASCADE)
+    periode = models.DateTimeField(null=True)
+    PIA = models.FloatField(null=True, default=0)
+
+    def __str__(self):
+        return str(self.id) + ' Agregat PIA ' + self.pegawai.get_full_name() + ' ---- ' + self.periode.strftime("%d %B, %Y")

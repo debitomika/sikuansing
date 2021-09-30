@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied
 import locale
 from typing import ContextManager
+from django.db.models.aggregates import Aggregate
 from django.forms.models import ALL_FIELDS
 from django.http.response import HttpResponse
 from openpyxl import Workbook, load_workbook
@@ -22,7 +23,7 @@ from django.views.generic import(
     ListView,
     CreateView
 )
-from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan, PIA
+from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan, PIA, PIAAgregat
 from .forms import ButirCKPCreationFormR, DokumenCKPCreationForm, KegiatanCreationForm, AdminKegiatanCreationForm, PenilaianButirCKPForm, PenilaianPIAForm
 
 # <------------------------------------------ Permission and Authorization ------------------------------->
@@ -1036,6 +1037,7 @@ def daftar_penilaian_pia(request):
         'pegawai_list': pegawai_list,
         'bulan_max_list' : bulan_max_list,
         'pia_list' : pia_list,
+        'title' : 'Daftar Penilaian PIA',
     }
 
     return render(request, 'backend/pia/daftarpenilaianpia.html', context)
@@ -1059,7 +1061,7 @@ def penilaian_pia(request, pk):
 
     context = {
         'pia': pia,
-        'title': 'Penilaian PIA',
+        'title': 'Input Nilai PIA',
     }
 
     return render(request, 'backend/pia/entripenilaianpia.html', context)
@@ -1068,11 +1070,25 @@ def penilaian_pia(request, pk):
 def hasil_penilaian_pia(request):
     pegawai_list = CustomUser.objects.all().exclude(is_superuser=True)
     periode = datetime(datetime.now().year, datetime.now().month, 1, hour=12)
-    nilai = {}
+    
     for pegawai in pegawai_list:
         total = PIA.objects.filter(pegawai_dinilai=pegawai, periode=periode).aggregate(Avg('total'))
-        nilai[pegawai.username] = total
+        total = total.get('total__avg')
+        if not PIAAgregat.objects.filter(pegawai=pegawai, periode=periode).exists():
+            AgregatPIA = PIAAgregat(pegawai=pegawai, periode=periode, PIA=total)
+            AgregatPIA.save()
+        else:
+            AgregatPIA = PIAAgregat.objects.get(pegawai=pegawai, periode=periode)
+            AgregatPIA.PIA = total
+            AgregatPIA.save()
 
-    return render(request, 'backend/pia/hasilpenilaianpia.html')
+    pia_terbaik = PIAAgregat.objects.filter(periode=periode).order_by('-PIA')[:5]
+
+    context = {
+        'pia_terbaik': pia_terbaik,
+        'title' : 'Hasil Penilaian PIA',
+    }
+
+    return render(request, 'backend/pia/hasilpenilaianpia.html', context)
 # <------------------------------------------ END SIPIA --------------------------------------------->
 # <app>/<model>_<viewtype>.html

@@ -60,7 +60,7 @@
                                 <div class="form-group row">
                                     <label for="inputProfesional" class="col-sm-2 col-form-label">Profesional</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputProfesional" name="profesional">
+                                        <input type="text" class="form-control" id="inputProfesional" {% if pia.profesional %} value="{{ pia.profesional }}" {% endif %} name="profesional">
                                     </div>
                                     {% for err in form.profesional.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>
@@ -69,7 +69,7 @@
                                 <div class="form-group row">
                                     <label for="inputIntegritas" class="col-sm-2 col-form-label">Integritas</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputIntegritas" name="integritas">
+                                        <input type="text" class="form-control" id="inputIntegritas" {% if pia.integritas %} value="{{ pia.integritas }}" {% endif %} name="integritas">
                                     </div>
                                     {% for err in form.integritas.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>
@@ -78,7 +78,7 @@
                                 <div class="form-group row">
                                     <label for="inputAmanah" class="col-sm-2 col-form-label">Amanah</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputAmanah" name="amanah">
+                                        <input type="text" class="form-control" id="inputAmanah" {% if pia.amanah %} value="{{ pia.amanah }}" {% endif %} name="amanah">
                                     </div>
                                     {% for err in form.amanah.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>

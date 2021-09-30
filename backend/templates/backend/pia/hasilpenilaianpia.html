@@ -49,61 +49,29 @@
                                 Pegawai
                             </th>
                             <th>
-                                Profesional
+                                Rata-rata Total PIA
                             </th>
                             <th>
-                                Integritas
-                            </th>
-                            <th>
-                                Amanah
-                            </th>
-                            <th class="text-center">
-                                Status
-                            </th>
-                            <th style="width: 20%">
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for pia in pia_list %}
+                        {% for pia in pia_terbaik %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ pia.pegawai_dinilai.get_full_name }}</td>
+                            <td>{{ pia.pegawai.get_full_name }}</td>
                             <td>
-                                {% if pia.profesional %}
-                                    {{ pia.profesional }}
+                                {% if pia.PIA %}
+                                    {{ pia.PIA }}
                                 {% else %}
                                     -
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if pia.integritas %}
-                                    {{ pia.integritas }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if pia.amanah %}
-                                    {{ pia.amanah }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td class="project-state">
-                                {% if pia.profesional and pia.integritas and pia.amanah %}
-                                    <span class="badge badge-success">Lengkap</span>    
-                                {% elif pia.profesional or pia.integritas or pia.amanah %}
-                                    <span class="badge badge-warning">Belum Lengkap</span>
-                                {% else %}
-                                    <span class="badge badge-danger">Belum Dinilai</span>
                                 {% endif %}
                             </td>
                             <td class="project-actions text-center">
-                                <a class="btn btn-info btn-sm" href="{% url 'sipia-penilaianpia' pia.id %}">
-                                    <i class="fas fa-pencil-alt">
+                                <a class="btn btn-info btn-sm" href="">
+                                    <i class="fas fa-check">
                                     </i>
-                                    Nilai
+                                    Pilih Pegawai
                                 </a>
                             </td>
                         </tr>

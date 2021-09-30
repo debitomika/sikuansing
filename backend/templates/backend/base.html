@@ -296,8 +296,8 @@
                             </ul>
                         </li>
                         <li class="nav-header">PENILAIAN PIA PEGAWAI</li>
-                        <li class="nav-item has-treeview {% if title in '' %}menu-open{% endif %}">
-                            <a href="#" class="nav-link {% if title in '' %}active{% endif %}">
+                        <li class="nav-item has-treeview {% if title in 'Daftar Penilaian PIA,Input Nilai PIA,Hasil Penilaian PIA' %}menu-open{% endif %}">
+                            <a href="#" class="nav-link {% if title in 'Daftar Penilaian PIA,Input Nilai PIA,Hasil Penilaian PIA' %}active{% endif %}">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>
                                     SIPIA
@@ -307,14 +307,14 @@
                             <ul class="nav nav-treeview">
                                 {% if user.is_superuser or user.jabatan_kantor == '2' %}
                                 <li class="nav-item">
-                                    <a href="{% url 'sipia-hasil-penilaian-pia' %}" class="nav-link {% if title == '' %}active{% endif %}">
+                                    <a href="{% url 'sipia-hasil-penilaian-pia' %}" class="nav-link {% if title == 'Hasil Penilaian PIA' %}active{% endif %}">
                                         <i class="fas fa-trophy nav-icon"></i>
                                         <p>Hasil Penilaian</p>
                                     </a>
                                 </li>
                                 {% endif %}
                                 <li class="nav-item">
-                                    <a href="{% url 'sipia-daftar-penilaian-pia' %}" class="nav-link">
+                                    <a href="{% url 'sipia-daftar-penilaian-pia' %}" class="nav-link {% if title in 'Input Nilai PIA,Daftar Penilaian PIA' %}active{% endif %}">
                                         <i class="fas fa-book nav-icon"></i>
                                         <p>Daftar Penilaian PIA</p>
                                     </a>

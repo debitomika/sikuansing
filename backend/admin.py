@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan, PIA
+from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan, PIA, PIAAgregat
 
 class MasterButirKegiatanAdmin(admin.ModelAdmin):
     model = MasterButirKegiatan
@@ -10,3 +10,4 @@ admin.site.register(MasterButirKegiatan, MasterButirKegiatanAdmin)
 admin.site.register(DokumenCKP)
 admin.site.register(ButirCKP)
 admin.site.register(PIA)
+admin.site.register(PIAAgregat)
