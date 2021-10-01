@@ -23,6 +23,7 @@ from django.views.generic import(
     ListView,
     CreateView
 )
+from dateutil.relativedelta import relativedelta
 from .models import ButirCKP, DokumenCKP, MasterKegiatan, MasterButirKegiatan, PIA, PIAAgregat
 from .forms import ButirCKPCreationFormR, DokumenCKPCreationForm, KegiatanCreationForm, AdminKegiatanCreationForm, PenilaianButirCKPForm, PenilaianPIAForm
 
@@ -43,13 +44,18 @@ def tidak_diizinkan(request):
 
 @login_required
 def home(request):
-    context = {
-        'masterkegiatans': MasterKegiatan.objects.all(),
-        'title': 'Master Kegiatan',
-    }
-    return render(request, 'backend/kegiatan/masterkegiatan.html', context)
-    # return render(request, 'backend/index.html')
+    
+    if request.user.jabatan_kantor not in CustomUser.KASI_LIST:
+        ckp_list = DokumenCKP.objects.filter(pegawai=request.user).order_by('-periode')
+    else:
+        ckp_list = DokumenCKP.objects.all().order_by('-periode')
 
+    context = {
+        'ckp_list': ckp_list,
+        'title': 'Daftar CKP Pegawai',
+    }
+
+    return render(request, 'backend/ckp/daftarckp.html', context)
 
 # function-based view
 @login_required
@@ -198,9 +204,9 @@ def delete_kegiatan(request, pk):
 def daftar_ckp(request):
 
     if request.user.jabatan_kantor not in CustomUser.KASI_LIST:
-        ckp_list = DokumenCKP.objects.filter(pegawai=request.user)
+        ckp_list = DokumenCKP.objects.filter(pegawai=request.user).order_by('-periode')
     else:
-        ckp_list = DokumenCKP.objects.all()
+        ckp_list = DokumenCKP.objects.all().order_by('-periode')
 
     context = {
         'ckp_list': ckp_list,
@@ -1031,11 +1037,11 @@ def daftar_penilaian_pia(request):
     
     pia_list = PIA.objects.filter(pegawai_penilai=request.user, periode=periode) 
 
-    bulan_max_list = DokumenCKP.get_daftar_bulan_max()
+    bulan_sebelumnya = datetime.now() - relativedelta(months=1)
     
     context = {
         'pegawai_list': pegawai_list,
-        'bulan_max_list' : bulan_max_list,
+        'bulan_sebelumnya' : bulan_sebelumnya,
         'pia_list' : pia_list,
         'title' : 'Daftar Penilaian PIA',
     }
@@ -1045,6 +1051,7 @@ def daftar_penilaian_pia(request):
 @login_required
 def penilaian_pia(request, pk):
     pia = PIA.objects.get(id=pk)
+    bulan_sebelumnya = datetime.now() - relativedelta(months=1)
 
     if request.method == 'POST':
         form = PenilaianPIAForm(request.POST, instance=pia)
@@ -1061,6 +1068,7 @@ def penilaian_pia(request, pk):
 
     context = {
         'pia': pia,
+        'bulan_sebelumnya' : bulan_sebelumnya,
         'title': 'Input Nilai PIA',
     }
 
@@ -1068,6 +1076,7 @@ def penilaian_pia(request, pk):
 
 @login_required
 def hasil_penilaian_pia(request):
+    bulan_sebelumnya = datetime.now() - relativedelta(months=1)
     pegawai_list = CustomUser.objects.all().exclude(is_superuser=True)
     periode = datetime(datetime.now().year, datetime.now().month, 1, hour=12)
     
@@ -1086,9 +1095,20 @@ def hasil_penilaian_pia(request):
 
     context = {
         'pia_terbaik': pia_terbaik,
+        'bulan_sebelumnya' : bulan_sebelumnya,
         'title' : 'Hasil Penilaian PIA',
     }
 
     return render(request, 'backend/pia/hasilpenilaianpia.html', context)
+
+@login_required
+def tentang_pia(request):
+
+    context = {
+        'title': 'Tentang PIA',
+    }
+
+    return render(request, 'backend/pia/tentangpia.html', context)
+
 # <------------------------------------------ END SIPIA --------------------------------------------->
 # <app>/<model>_<viewtype>.html

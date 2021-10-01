@@ -1,0 +1,146 @@
+{% extends "backend/base.html" %}
+{% block content %}
+{% load static %}
+{% load i18n %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-id-badge"></i>&nbsp;&nbsp;Nilai Inti BPS</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'backend-home' %}">Beranda</a></li>
+                        <li class="breadcrumb-item active">Nilai Inti BPS</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="containter-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if messages %}
+                    {% for message in messages|slice:":1" %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" id="success-alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                            id='btn-close-alert'>&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- Tentang PIA -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Profesional Integritas Amanah</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+                            <p class="text">
+                                <strong>Core values (nilai-nilai inti) BPS merupakan pondasi yang kokoh untuk membangun jati diri dan penuntun perilaku setiap insan BPS dalam melaksanakan tugas.</strong>
+                            </p>
+
+                            <h5><strong>Profesional</strong></h5>
+
+                            <p class="text">
+                                Merupakan modal dasar yang harus dimiliki oleh setiap pegawai dalam melaksanakan profesi/tugasnya, dengan unsur-unsur sebagai berikut:
+                            </p>
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item">
+                                    <strong>Kompeten;</strong> mempunyai keahlian dalam bidang tugas yang diemban
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Efektif;</strong> memberikan hasil maksimal
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Efisien;</strong> mengerjakan setiap tugas secara produktif, dengan suber daya minimal
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Inovatif;</strong> selalu melakukan pembaruan dan/atau penyempurnaan melalui proses pembelajaran diri secara terus-menerus
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Sistematik;</strong> meyakini bahwa setiap pekerjaan mempunyai tata urutan proses sehingga pekerjaan yang satu menjadi bagian yang tidak terpisahkan dari pekerjaan yang lain
+                                </li>
+                            </ul>
+            
+                            <hr>
+
+                            <h5><strong>Integritas</strong></h5>
+
+                            <p class="text">
+                                Merupakan sikap dan perilaku kerja yang harus dimiliki oleh setiap pegawai dalam pengabdiannya kepada institusi/organisasi, dengan unsur-unsur sebagai berikut:
+                            </p>
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item">
+                                    <strong>Dedikasi;</strong> memiliki pengabdian yang tinggi terhadap profesi yang diemban dan institusi
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Disiplin;</strong> melaksanakan pekerjaan sesuai dengan ketentuan yang telah ditetapkan
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Konsisten;</strong> satunya kata dengan perbuatan
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Terbuka;</strong> menghargai ide, saran, pendapat, masukan, dan kritik dari berbagai pihak
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Akuntabel;</strong> bertanggung jawab dan setiap langkahnya terukur
+                                </li>
+                            </ul>
+            
+                            <hr>
+
+                            <h5><strong>Amanah</strong></h5>
+
+                            <p class="text">
+                                Merupakan sikap kerja yang harus dimiliki oleh setiap pegawai untuk dipertanggungjawabkan kepada Tuhan Yang Maha Esa, dengan unsur-unsur sebagai berikut:
+                            </p>
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item">
+                                    <strong>Terpecaya;</strong> melaksanakan pekerjaan sesuai ddengan ketentuan, yang tidak hanya didasarkan pada logika tetapi juga sekaligus menyentuh dimensi mental spiritual
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Jujur;</strong> melaksanakan semua pekerjaan dengan tidak menyimpang dari prinsip moralitas
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Tulus;</strong> melaksanakan tugas tanpa pamrih, menghindari konflik kepentingan (pribadi, kelompok, dan golongan), serta mendedikasikan semua tugas untuk perlindungan kehidupan manusia, sebagai amal ibadah atau perbuatan untuk Tuhan Yang Maha Esa
+                                </li>
+                                <li class="list-group-item">
+                                   <strong> <strong>Adil;</strong> menempatkan sesuatu secara berkeadilan dan memberikan haknya
+                                </li>
+                            </ul>
+            
+                            <hr>
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div><!-- /.content-wrapper -->
+
+{% endblock content %}
+{% block scripts %}
+{{ block.super }}
+<script>
+    $("#success-alert").delay(3000).slideUp(200, function () {
+        $("#success-alert").slideUp(200);
+    });
+
+</script>
+{% endblock scripts %}

@@ -26,6 +26,7 @@ urlpatterns = [
     path('export-excel/<int:pk>/', views.export_xls_ckp, name='sicakep-export-excel'),
     
     # URL PIA
+    path('tentangpia/', views.tentang_pia, name='sipia-tentang-pia'),
     path('daftarpenilaianpia/', views.daftar_penilaian_pia, name='sipia-daftar-penilaian-pia'),
     path('penilaianpia/<int:pk>/', views.penilaian_pia, name='sipia-penilaianpia'),
     path('hasilpenilaianpia/', views.hasil_penilaian_pia, name='sipia-hasil-penilaian-pia'),

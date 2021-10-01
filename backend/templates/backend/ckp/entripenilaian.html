@@ -121,7 +121,7 @@
                                 <div class="form-group row">
                                     <label for="inputRealisasi" class="col-sm-2 col-form-label">Realisasi</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputRealisasi" {% if butir_ckp.realisasi %} value="{{ butir_ckp.realisasi }}" {% endif %} name="realisasi" {% if butir_ckp.kegiatan.author !=  user and user.jabatan_kantor != '1' %} disabled {% endif %}>
+                                        <input type="text" class="form-control" id="inputRealisasi" {% if butir_ckp.realisasi %} value="{{ butir_ckp.realisasi }}" {% endif %} name="realisasi" {% if butir_ckp.kegiatan.author !=  user and user.jabatan_kantor != '1' and not user.is_superuser %} disabled {% endif %}>
                                     </div>
                                     {% for err in form.realisasi.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>
@@ -130,7 +130,7 @@
                                 <div class="form-group row">
                                     <label for="inputTingkatKualitas" class="col-sm-2 col-form-label">Tingkat Kualitas</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputTingkatKualitas" value="{{ butir_ckp.tingkat_kualitas|floatformat }}" name="tingkat_kualitas" {% if butir_ckp.kegiatan.author !=  user and user.jabatan_kantor != '1' %} disabled {% endif %}>
+                                        <input type="text" class="form-control" id="inputTingkatKualitas" value="{{ butir_ckp.tingkat_kualitas|floatformat }}" name="tingkat_kualitas" {% if butir_ckp.kegiatan.author !=  user and user.jabatan_kantor != '1' and not user.is_superuser %} disabled {% endif %}>
                                     </div>
                                     {% for err in form.tingkat_kualitas.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>
@@ -139,7 +139,7 @@
                                 <div class="form-group row">
                                     <label for="inputKeterangan" class="col-sm-2 col-form-label">Keterangan</label>
                                     <div class="col-sm-10">
-                                        <textarea id="inputKeterangan" name="keterangan" class="form-control" rows="3" placeholder="" {% if butir_ckp.kegiatan.author != user and user.jabatan_kantor != '1' %} disabled {% endif %}>{{ butir_ckp.keterangan }}</textarea>
+                                        <textarea id="inputKeterangan" name="keterangan" class="form-control" rows="3" placeholder="" {% if butir_ckp.kegiatan.author != user and user.jabatan_kantor != '1' and not user.is_superuser %} disabled {% endif %}>{{ butir_ckp.keterangan }}</textarea>
                                     </div>
                                     {% for err in form.keterangan.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>

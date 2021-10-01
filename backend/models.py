@@ -511,7 +511,7 @@ class MasterKegiatan(models.Model):
     butir_kegiatan = models.ForeignKey(MasterButirKegiatan, on_delete=SET_NULL, null=True, blank=True)
 
     satuan = models.CharField(
-        max_length=30,
+        max_length=60,
     )
 
     author = models.ForeignKey(
@@ -540,6 +540,19 @@ class DokumenCKP(models.Model):
         bulan_terakhir = datetime.now() + relativedelta(months=1) # range bulan, dari bulan sekarang + 1
         locale.setlocale(locale.LC_TIME, "IND")
         return [(awal_tahun + relativedelta(months=i)).strftime("%B") for i in range(bulan_terakhir.month)]
+    
+    def get_status_penilaian(self):
+        butir_ckp_set = self.butirckp_set.all()
+        lengkap = True
+        
+        if len(butir_ckp_set) == 0:
+            lengkap = False
+
+        for butir_ckp in butir_ckp_set:
+            if butir_ckp.realisasi is None or butir_ckp.tingkat_kualitas is None:
+                lengkap = False
+        
+        return lengkap
     
     def __str__(self):
         return str(self.id) + ' CKP ' + self.pegawai.get_full_name() + ' ---- ' + self.periode.strftime("%d %B, %Y")

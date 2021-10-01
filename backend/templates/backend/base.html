@@ -296,8 +296,8 @@
                             </ul>
                         </li>
                         <li class="nav-header">PENILAIAN PIA PEGAWAI</li>
-                        <li class="nav-item has-treeview {% if title in 'Daftar Penilaian PIA,Input Nilai PIA,Hasil Penilaian PIA' %}menu-open{% endif %}">
-                            <a href="#" class="nav-link {% if title in 'Daftar Penilaian PIA,Input Nilai PIA,Hasil Penilaian PIA' %}active{% endif %}">
+                        <li class="nav-item has-treeview {% if title in 'Daftar Penilaian PIA,Input Nilai PIA,Hasil Penilaian PIA,Tentang PIA' %}menu-open{% endif %}">
+                            <a href="#" class="nav-link {% if title in 'Daftar Penilaian PIA,Input Nilai PIA,Hasil Penilaian PIA,Tentang PIA' %}active{% endif %}">
                                 <i class="nav-icon fas fa-star"></i>
                                 <p>
                                     SIPIA
@@ -305,6 +305,12 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'sipia-tentang-pia' %}" class="nav-link {% if title in 'Tentang PIA' %}active{% endif %}">
+                                        <i class="fas fa-info nav-icon"></i>
+                                        <p>Tentang PIA</p>
+                                    </a>
+                                </li>
                                 {% if user.is_superuser or user.jabatan_kantor == '2' %}
                                 <li class="nav-item">
                                     <a href="{% url 'sipia-hasil-penilaian-pia' %}" class="nav-link {% if title == 'Hasil Penilaian PIA' %}active{% endif %}">
