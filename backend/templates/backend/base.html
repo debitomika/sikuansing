@@ -311,7 +311,7 @@
                                         <p>Tentang PIA</p>
                                     </a>
                                 </li>
-                                {% if user.is_superuser or user.jabatan_kantor == '2' %}
+                                {% if user.is_superuser or user.jabatan_kantor in '1,2' %}
                                 <li class="nav-item">
                                     <a href="{% url 'sipia-hasil-penilaian-pia' %}" class="nav-link {% if title == 'Hasil Penilaian PIA' %}active{% endif %}">
                                         <i class="fas fa-trophy nav-icon"></i>

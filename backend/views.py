@@ -1057,12 +1057,15 @@ def penilaian_pia(request, pk):
         form = PenilaianPIAForm(request.POST, instance=pia)
         if form.is_valid():
             fs = form.save(commit=False)
-            fs.total = (pia.profesional+pia.integritas+pia.amanah)/3
+            fs.total = (form.cleaned_data['profesional']+form.cleaned_data['integritas']+form.cleaned_data['amanah'])/3
+            fs.pegawai_dinilai = pia.pegawai_dinilai
+            fs.pegawai_penilai = pia.pegawai_penilai
+            fs.periode = pia.periode
             fs.save()
             messages.success(request, f'SUKSES! Penilaian berhasil dilakukan')
             return redirect('sipia-daftar-penilaian-pia')
-        else:
-            print('form tidak valid')
+        # else:
+        #     print('form tidak valid')
     else:
         form = PenilaianPIAForm()
 

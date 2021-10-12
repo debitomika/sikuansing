@@ -585,7 +585,7 @@ class PIA(models.Model):
     profesional = models.FloatField(null=True)
     integritas = models.FloatField(null=True)
     amanah = models.FloatField(null=True)
-
+ 
     total = models.FloatField(null=True, default=0)
 
     def __str__(self):
