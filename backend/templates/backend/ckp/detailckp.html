@@ -115,9 +115,9 @@
                                         <td>{{ butir_ckp.get_jenis_butir_ckp_display }}</td>
                                         <td>{{ butir_ckp.kegiatan.uraian_kegiatan }}</td>
                                         <td>{{ butir_ckp.kegiatan.satuan }}</td>
-                                        <td>{{ butir_ckp.target }}</td>
-                                        <td>{% if butir_ckp.realisasi %}{{ butir_ckp.realisasi }} {% else %} - {% endif%}</td>
-                                        <td>{% if butir_ckp.tingkat_kualitas %}{{ butir_ckp.tingkat_kualitas }} {% else%} - {% endif %}</td>
+                                        <td>{{ butir_ckp.target|floatformat }}</td>
+                                        <td>{% if butir_ckp.realisasi %}{{ butir_ckp.realisasi|floatformat }} {% else %} - {% endif%}</td>
+                                        <td>{% if butir_ckp.tingkat_kualitas %}{{ butir_ckp.tingkat_kualitas|floatformat }} {% else%} - {% endif %}</td>
                                         <td>{{ butir_ckp.kegiatan.get_subject_matter_singkat }}</td>
                                         <!-- <td>{{ butir_ckp.keterangan|truncatechars:10 }}</td> -->
                                         <td>{{ butir_ckp.keterangan}}</td>

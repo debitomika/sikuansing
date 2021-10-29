@@ -572,8 +572,8 @@ class ButirCKP(models.Model):
     )
     
     kegiatan = models.ForeignKey(MasterKegiatan, on_delete=CASCADE)
-    target = models.IntegerField()
-    realisasi = models.IntegerField(blank=True, null=True)
+    target = models.FloatField()
+    realisasi = models.FloatField(blank=True, null=True)
     tingkat_kualitas = models.FloatField(blank=True, null=True)
     keterangan = models.TextField(blank=True, null=True)
 

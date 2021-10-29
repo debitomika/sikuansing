@@ -112,7 +112,7 @@
                                 <div class="form-group row">
                                     <label for="inputTarget" class="col-sm-2 col-form-label">Target</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputTarget" value="{{ butir_ckp.target }}" name="target" disabled>
+                                        <input type="text" class="form-control" id="inputTarget" value="{{ butir_ckp.target|floatformat }}" name="target" disabled>
                                     </div>
                                     {% for err in form.target.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>
@@ -121,7 +121,7 @@
                                 <div class="form-group row">
                                     <label for="inputRealisasi" class="col-sm-2 col-form-label">Realisasi</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputRealisasi" {% if butir_ckp.realisasi %} value="{{ butir_ckp.realisasi }}" {% endif %} name="realisasi" {% if butir_ckp.kegiatan.author !=  user and user.jabatan_kantor != '1' and not user.is_superuser %} disabled {% endif %}>
+                                        <input type="text" class="form-control" id="inputRealisasi" {% if butir_ckp.realisasi %} value="{{ butir_ckp.realisasi|floatformat }}" {% endif %} name="realisasi" {% if butir_ckp.kegiatan.author !=  user and user.jabatan_kantor != '1' and not user.is_superuser %} disabled {% endif %}>
                                     </div>
                                     {% for err in form.realisasi.errors %}
                                     <small class="text-danger ml-2">{{ err }}</small><br>
